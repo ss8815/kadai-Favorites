@@ -7,4 +7,6 @@ Rails.application.routes.draw do
     
   get 'signup', to: 'users#new'
   resources :users, only: [:index, :show, :new, :create]
+  #Micropostの一覧はユーザに紐付いているのでtoppages#indexやusers#showで表示する
+  resources :microposts, only: [:create, :destroy]
 end

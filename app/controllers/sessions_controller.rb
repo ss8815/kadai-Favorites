@@ -3,7 +3,9 @@ class SessionsController < ApplicationController
   end
 
   def create
+    #フォームデータのemailを小文字化して取得
     email = params[:session][:email].downcase
+    #フォームデータのpasswordを取得
     password = params[:session][:password]
     if login(email, password)
       flash[:success] = 'ログインに成功しました。'
@@ -23,9 +25,12 @@ class SessionsController < ApplicationController
   private
   
   def login(email, password)
+    #入力フォームのemailと同じメールアドレスのユーザを検索し@userへ代入
     @user = User.find_by(email: email)
+    #if @userによって@userが存在するかを確認
+    #パスワード確認。組み合わせが間違っていた場合にはログイン不可
     if @user && @user.authenticate(password)
-      # ログイン成功
+      #ブラウザ=Cookieとして、サーバ=Sessionとしてログイン状態が維持
       session[:user_id] = @user.id
       return true
     else

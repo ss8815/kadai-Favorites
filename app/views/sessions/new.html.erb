@@ -4,7 +4,8 @@
 
 <div class="row">
   <div class="col-sm-6 offset-sm-3">
-
+    <!--モデルがないフォームをform_withで作成する際はmodel:ではなくurl:を使う-->
+    <!--scope: :sessionを追記することで全てのフォームデータが:sessionの中に入る-->
     <%= form_with(url: login_path, scope: :session, local: true) do |f| %>
 
       <div class="form-group">

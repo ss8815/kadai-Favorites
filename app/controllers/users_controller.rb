@@ -5,10 +5,15 @@ class UsersController < ApplicationController
   end
 
   def show
+    #createでsaveしたレコードからUserモデルのインスタンスとして取得
+    #findはidから単一のレコードを検索し返すメソッド
     @user = User.find(params[:id])
+    @microposts = @user.microposts.order(id: :desc).page(params[:page])
+    counts(@user)
   end
 
   def new
+    #新規でユーザのインスタンス生成
     @user = User.new
   end
 
