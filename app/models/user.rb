@@ -20,6 +20,9 @@ class User < ApplicationRecord
     # user.followers = userが中間テーブルを取得,reverses_of_relationshipのuser_idから自分をフォローしているUser達を取得
     # 中間テーブルを経由して相手の情報を取得するにはthroughを使用
     
+    has_many :favorites # 自分がお気に入り追加したMicropostへの参照
+    has_many :likes, through: :favorites, source: :micropost
+    
     def follow(other_user)
       unless self == other_user # フォローするother_userが自分自身ではないか検証
       # 実行したUserのインスタンスがself 
@@ -36,5 +39,28 @@ class User < ApplicationRecord
     def following?(other_user)
       self.followings.include?(other_user) # self.followingsでフォローしているUserを取得
       # include?(other_user)によってother_userが含まれていないか確認
+    end
+    
+    def feed_microposts
+      Micropost.where(user_id: self.following_ids + [self.id])
+      # Micropost.where(user_id:フォローユーザ+自分自身)となるMicropostを全て取得
+    end
+    
+    def favorite(micropost)
+      self.favorites.find_or_create_by(micropost_id: micropost.id)
+    end
+    
+    def unfavorite(micropost) # 追加があれば削除
+      favorite = self.favorites.find_by(micropost_id: micropost.id)
+      favorite.destroy if favorite # favoriteが存在すればdestroy
+    end
+    
+    def like?(micropost)
+      self.likes.include?(micropost) # self.likesでお気に入りしているMicropostを取得
+      # include?(micropost)によってmicropostが含まれていないか確認
+    end
+    
+    def feed_favorites
+      Micropost.where(micropost_id: self.like_ids + [self.id])
     end
 end

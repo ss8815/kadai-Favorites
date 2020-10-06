@@ -10,10 +10,12 @@ Rails.application.routes.draw do
     member do # フォロー中,フォローされているユーザ一覧を表示するルーティング
       get :followings
       get :followers
+      get :likes
     end
   end
   
   resources :microposts, only: [:create, :destroy]
   resources :relationships, only: [:create, :destroy]
+  resources :favorites, only: [:create, :destroy]
   # ログインユーザがユーザをフォロー／アンフォローできるようにするルーティング
 end
