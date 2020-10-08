@@ -15,7 +15,7 @@ class MicropostsController < ApplicationController
   end
 
   def destroy
-    @micropost.destroy　#correct_userで取得した@micropostをdestroyしている
+    @micropost.destroy #correct_userで取得した@micropostをdestroyしている
     flash[:success] = 'メッセージを削除しました。'
     #アクションが実行されたページへ戻る
     redirect_back(fallback_location: root_path) #このアクションが実行されたページに戻るメソッド
