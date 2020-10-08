@@ -20,7 +20,7 @@ class User < ApplicationRecord
     # user.followers = userが中間テーブルを取得,reverses_of_relationshipのuser_idから自分をフォローしているUser達を取得
     # 中間テーブルを経由して相手の情報を取得するにはthroughを使用
     
-    has_many :favorites, dependent: :destroy# 自分がお気に入り追加したMicropostへの参照
+    has_many :favorites # 自分がお気に入り追加したMicropostへの参照
     has_many :likes, through: :favorites, source: :micropost
     
     def follow(other_user)
